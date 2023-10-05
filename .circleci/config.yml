@@ -51,7 +51,7 @@ jobs:
           name: build
           command: make clean build
       - persist_to_workspace:  # Persist the lambda.zip to workspace
-          root: .
+          root: /workspace
           paths:
             - lambda.zip
 
