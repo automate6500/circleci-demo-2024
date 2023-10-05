@@ -51,7 +51,7 @@ jobs:
           name: build
           command: make clean build
       - persist_to_workspace:  # Persist the lambda.zip to workspace
-          root: /workspace
+          root: workspace
           paths:
             - lambda.zip
 
@@ -61,10 +61,13 @@ jobs:
     steps:
       - checkout
       - attach_workspace:  # Attach workspace to get the lambda.zip
-          at: /workspace
+          at: /tmp/workspace
       - run:
           name: install aws cli
           command: pip install --quiet --upgrade awscli
+      - run:
+          name: get zip
+          command: mv /tmp/workspace/lambda.zip .
       - run:
           name: deploy
           command: make deploy FUNCTION=${STAGING_FUNCTION_NAME} PLATFORM="CircleCI" VERSION=${CIRCLE_SHA1} BUILD_NUMBER=${CIRCLE_BUILD_NUM}
@@ -78,10 +81,13 @@ jobs:
     steps:
       - checkout
       - attach_workspace:  # Attach workspace to get the lambda.zip
-          at: /workspace
+          at: /tmp/workspace
       - run:
           name: install aws cli
           command: pip install --quiet --upgrade awscli
+      - run:
+          name: get zip
+          command: mv /tmp/workspace/lambda.zip .
       - run:
           name: deploy
           command: make deploy FUNCTION=${PRODUCTION_FUNCTION_NAME} PLATFORM="CircleCI" VERSION=${CIRCLE_SHA1} BUILD_NUMBER=${CIRCLE_BUILD_NUM}
