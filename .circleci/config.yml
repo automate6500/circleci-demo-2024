@@ -51,7 +51,7 @@ jobs:
           name: build
           command: make clean build
       - persist_to_workspace:  # Persist the lambda.zip to workspace
-          root: workspace
+          root: .
           paths:
             - lambda.zip
 
@@ -61,7 +61,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:  # Attach workspace to get the lambda.zip
-          at: /tmp/workspace
+          at: .
       - run:
           name: install aws cli
           command: pip install --quiet --upgrade awscli
@@ -81,7 +81,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:  # Attach workspace to get the lambda.zip
-          at: /tmp/workspace
+          at: .
       - run:
           name: install aws cli
           command: pip install --quiet --upgrade awscli
